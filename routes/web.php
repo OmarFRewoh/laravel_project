@@ -15,10 +15,11 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::middleware(['web'])->group(function() {
-    Route::get( '/',         [AuthController::class, 'index'])->name('home');
-    Route::get( '/login',    [AuthController::class, 'showLoginForm'])->name('showLogin');
-    Route::post('/login',    [AuthController::class, 'login'])->name('login');
-    Route::get( '/register', [AuthController::class, 'showRegisterForm'])->name('showRegister');
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::get( '/home',     [AuthController::class, 'home'])->name('home');
+    Route::get( '/',               [AuthController::class, 'index'])->name('index');
+    Route::get( '/login',          [AuthController::class, 'showLoginForm'])->name('showLogin');
+    Route::post('/login',          [AuthController::class, 'login'])->name('login');
+    Route::get( '/register',       [AuthController::class, 'showRegisterForm'])->name('showRegister');
+    Route::post('/register',       [AuthController::class, 'register'])->name('register');
+    Route::get( '/home',           [AuthController::class, 'home'])->name('home');
+    Route::post('/logout',         [AuthController::class, 'logout'])->name('logout');
 });

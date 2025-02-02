@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -10,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+    const LAST_LOGIN_LONGEVITY = 60 * 24 * 30; 
+
     /**
      * Función que muestra la vista de home o la vista con el formulario de Login
      */
@@ -54,29 +58,35 @@ class AuthController extends Controller
         return redirect()->route('showLogin');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): RedirectResponse
     {
-        // Comprobamos que el id_usuario y la contraseña han sido introducidos
         $request->validate([
             'id_usuario' => 'required',
             'password' => 'required',
         ]);
 
         $credentials = $request->only('id_usuario', 'password');
-        // Si el usuario existe lo logamos y lo llevamos a la vista de "home" con un mensaje
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->route('home');
         }
 
-        // Si el usuario no existe devolvemos al usuario al formulario de login con un mensaje de error
         return back()->withErrors(['error' => 'Credenciales incorrectas']);
-        
+    }
+
+    public function logout(Request $request)
+    {
+        $lastLoginTime = now()->format('d-m-Y H:i');
+        $cookie = cookie('last_login', $lastLoginTime, self::LAST_LOGIN_LONGEVITY);
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->withCookie($cookie);
     }
 
     /**
-     * Función que muestra la vista de home si el usuario está logado y si no le devuelve al formulario de login
-     * con un mensaje de error
+     * Check if the user is authenticated, if so, redirects to home, otherwise to root
      */
     public function home()
     {

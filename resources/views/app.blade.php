@@ -14,8 +14,20 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
     <body >
+        @if(Auth::check())
+            <div style="float: right;">
+                <span>Bienvenido, {{ Auth::user()->id_usuario }}</span> |
+                <span>Última conexión: {{ request()->cookie('last_login') ?? '-- --:--:--' }}</span> |
+                <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    @csrf
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+        @endif
+
         @yield('content')
     </body>
 </html>
