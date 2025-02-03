@@ -84,16 +84,4 @@ class AuthController extends Controller
 
         return redirect()->route('login')->withCookie($cookie);
     }
-
-    /**
-     * Check if the user is authenticated, if so, redirects to home, otherwise to root
-     */
-    public function home()
-    {
-        if (Auth::check()) {
-            return view('home');
-        }
-
-        return redirect("/")->withSuccess('No tienes acceso, por favor inicia sesión');
-    }
 }

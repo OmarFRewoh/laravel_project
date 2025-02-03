@@ -14,7 +14,7 @@ use App\Http\Controllers\Api\HousesController;
 |
 */
 
-Route::middleware(['auth:api'])->group(function() {
+Route::middleware([])->group(function() {
     Route::get( '/house/show/{id?}',    [HousesController::class, 'show'])->name('houseShow');
     Route::post('/house/store',         [HousesController::class, 'store'])->name('houseStore');
     Route::delete('/house/delete/{id}', [HousesController::class, 'delete'])->name('houseDelete');

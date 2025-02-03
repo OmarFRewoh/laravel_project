@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class House extends Model
 {
@@ -28,17 +29,24 @@ class House extends Model
         'observaciones'
     ];
 
-    public function getHouses($id = null): Collection
+    /**
+     * Shows a house or all if no id is provided
+     */
+    public function getHouse($id): Collection
     {
-        if ($id) {
-            return House::where('id', $id)->get();
-        } else {
-            return House::all();
-        }
+        return House::findOrFail($id);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Shows a house or all if no id is provided
+     */
+    public function getHouses($itemsPerPage = 5): LengthAwarePaginator
+    {
+        return House::orderBy('fecha_anuncio', 'desc')->paginate($itemsPerPage);
+    }
+
+    /**
+     * Creates or updates a new house
      */
     public function createHouse(array $request): Collection
     {

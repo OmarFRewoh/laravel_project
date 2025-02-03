@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HousesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,6 @@ Route::middleware(['web'])->group(function() {
     Route::post('/login',          [AuthController::class, 'login'])->name('login');
     Route::get( '/register',       [AuthController::class, 'showRegisterForm'])->name('showRegister');
     Route::post('/register',       [AuthController::class, 'register'])->name('register');
-    Route::get( '/home',           [AuthController::class, 'home'])->name('home');
+    Route::get( '/home',           [HousesController::class, 'show'])->name('home');
     Route::post('/logout',         [AuthController::class, 'logout'])->name('logout');
 });

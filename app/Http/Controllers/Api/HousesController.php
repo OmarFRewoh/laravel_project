@@ -14,12 +14,15 @@ class HousesController extends Controller
     public function __construct() {
         $this->houseModel = new House();
     }
+    
     /**
      * Display a listing of the resource.
      */
     public function show($id = null): JsonResponse
     {   
-        $houses = $this->houseModel->getHouses($id);
+        $houses = $id 
+            ? $this->houseModel->getHouse($id)
+            : $this->houseModel->getHouses();
         return response()->json($houses);
     }
 
