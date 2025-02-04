@@ -29,7 +29,7 @@ class HousesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $house = $this->houseModel->createHouse($request->all());
         return response()->json($house);

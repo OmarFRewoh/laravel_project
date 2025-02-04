@@ -48,20 +48,24 @@ class House extends Model
     /**
      * Creates or updates a new house
      */
-    public function createHouse(array $request): Collection
+    public function createHouse(array $request): House
     {
-        return $this->updateOrCreate(
-            ['id' => $request['id']],[
+        $data = [
             'tipo' => $request['tipo'],
             'zona' => $request['zona'],
             'direccion' => $request['direccion'],
-            'ndormitorios' => $request['ndormitorios'],
+            'ndormitorios' => $request['dormitorios'],
             'precio' => $request['precio'],
             'tamano' => $request['tamano'],
-            'fecha_anuncio' => $request['fecha_anuncio'],
             'extras' => $request['extras'],
             'observaciones' => $request['observaciones']
-        ]);
+        ];
+
+        if(!isset($request['id'])) {
+            $data['fecha_anuncio'] = now()->format('Y-m-d');
+        }
+
+        return $this->updateOrCreate(['id' => $request['id']], $data);
     }
 
     /**
