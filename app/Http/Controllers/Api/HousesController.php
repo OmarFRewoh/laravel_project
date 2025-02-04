@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\House;
+use App\Services\House as HouseLib;
 
 class HousesController extends Controller
 {
     private $houseModel = null;
+    
+    private $houseLib = null;
 
     public function __construct() {
         $this->houseModel = new House();
+        $this->houseLib = new HouseLib();
     }
     
     /**
@@ -24,6 +28,16 @@ class HousesController extends Controller
             ? $this->houseModel->getHouse($id)
             : $this->houseModel->getHouses();
         return response()->json($houses);
+    }
+    
+    /**
+     * Display a listing of the resource.
+     */
+    public function search(Request $request)
+    {   
+        $filters = $this->houseLib->cleanSearchFilters($request->all());
+        $houses = $this->houseModel->searchHouse($filters);
+        return view('components.housesList', compact('houses'));
     }
 
     /**
