@@ -8,11 +8,11 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class House extends Model
 {
+    CONST DEFAULT_ITEM_PER_PAGE = 5;
+
     protected $table = 'viviendas';
 
     public $timestamps = false;
-
-    CONST DEFAULT_ITEM_PER_PAGE = 5;
 
     /**
      * The attributes that are mass assignable.
@@ -37,7 +37,7 @@ class House extends Model
     }
 
     /**
-     * Shows a house or all if no id is provided
+     * Shows a house
      */
     public function getHouse($id): Collection
     {
@@ -45,7 +45,7 @@ class House extends Model
     }
 
     /**
-     * Shows a house or all if no id is provided
+     * Gets a list of all houses with photos, orderred by desc date and paginated
      */
     public function getHouses($itemsPerPage = self::DEFAULT_ITEM_PER_PAGE): LengthAwarePaginator
     {
@@ -76,7 +76,7 @@ class House extends Model
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deletes a house
      */
     public function deleteHouse(string $id): bool
     {
@@ -84,7 +84,7 @@ class House extends Model
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Search for houses which adjust to the filters
      */
     public function searchHouse(array $filters): LengthAwarePaginator 
     {
@@ -97,6 +97,10 @@ class House extends Model
         ];
 
         $housesQuery = $this::with('photos');
+
+        $housesQuery->when(isset($filters['tipo']), function ($query) use ($filters) {
+            $query->where('tipo', $filters['tipo']);
+        });
 
         $housesQuery->when(isset($filters['zona']), function ($query) use ($filters) {
             $query->where('zona', $filters['zona']);

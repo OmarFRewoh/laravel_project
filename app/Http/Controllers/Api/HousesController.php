@@ -33,7 +33,7 @@ class HousesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function search(Request $request)
+    public function search(Request $request): \Illuminate\View\View
     {   
         $filters = $this->houseLib->cleanSearchFilters($request->all());
         $houses = $this->houseModel->searchHouse($filters);
@@ -41,7 +41,7 @@ class HousesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Creates a new resource.
      */
     public function store(Request $request): JsonResponse
     {
@@ -52,7 +52,7 @@ class HousesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(string $id): bool
+    public function delete(string $id): JsonResponse
     {
         $deleted = $this->houseModel->deleteHouse($id);
         return response()->json($deleted);

@@ -21,6 +21,10 @@ Route::middleware(['web'])->group(function() {
     Route::post('/login',          [AuthController::class, 'login'])->name('login');
     Route::get( '/register',       [AuthController::class, 'showRegisterForm'])->name('showRegister');
     Route::post('/register',       [AuthController::class, 'register'])->name('register');
-    Route::get( '/home',           [HousesController::class, 'show'])->name('home');
-    Route::post('/logout',         [AuthController::class, 'logout'])->name('logout');
+    Route::middleware(['auth'])->group(function() {
+        Route::get( '/home',           [HousesController::class, 'show'])->name('home');
+        Route::post('/logout',         [AuthController::class, 'logout'])->name('logout');
+        Route::get('/admin',           [AuthController::class, 'admin'])->name('admin');
+
+    });
 });

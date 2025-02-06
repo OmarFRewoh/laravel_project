@@ -31,12 +31,16 @@
                         <a href="{{ asset('storage/photos/' . $photo->foto) }}" target="_blank">Foto {{$index + 1}}</a>
                     @endforeach
                 </td>
-                <td>
-                    <button type="button" class="btn btn-primary edit-house" data-id="{{$house['id']}}">Modificar</button>
-                    <button type="button" class="btn btn-danger delete-house" data-id="{{$house['id']}}">Borrar</button>
+                <td class="align-middle">
+                    <div class="d-flex gap-1">
+                        <button type="button" class="btn btn-primary edit-house" data-id="{{$house['id']}}"><i class="bi bi-pencil-square"></i></button>
+                        <button type="button" class="btn btn-danger delete-house" data-id="{{$house['id']}}"><i class="bi bi-trash"></i></button>
+                    </div>
                 </td>
             </tr>
         @endforeach
     </tbody>
 </table>
-{{ $houses->links('vendor.pagination.bootstrap-5') }}
+<div id="pagination-links" class="d-flex justify-content-center">
+    {{ $houses->links('vendor.pagination.bootstrap-5') }}
+</div>

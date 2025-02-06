@@ -32,6 +32,9 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
+        if(Auth::check()) {
+            return redirect('/home');
+        }
         return view('login');
     }
 
@@ -66,6 +69,7 @@ class AuthController extends Controller
         ]);
 
         $credentials = $request->only('id_usuario', 'password');
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->route('home');
@@ -83,5 +87,10 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login')->withCookie($cookie);
+    }
+
+    public function admin()
+    {
+        return view('admin');
     }
 }

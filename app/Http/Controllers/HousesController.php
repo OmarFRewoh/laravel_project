@@ -18,7 +18,6 @@ class HousesController extends Controller
      */
     public function show(): View
     {   
-        $houses = $this->houseModel->getHouses();
-        return view('home', compact('houses'));
+        return view('home');
     }
 }

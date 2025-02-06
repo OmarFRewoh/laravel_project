@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\HousesController;
 
@@ -14,9 +15,14 @@ use App\Http\Controllers\Api\HousesController;
 |
 */
 
-Route::middleware([])->group(function() {
-    Route::get( '/house/show/{id?}',    [HousesController::class, 'show'])->name('houseShow');
-    Route::get( '/house/search',        [HousesController::class, 'search'])->name('houseSearch');
-    Route::post('/house/store',         [HousesController::class, 'store'])->name('houseStore');
-    Route::delete('/house/delete/{id}', [HousesController::class, 'delete'])->name('houseDelete');
+Route::middleware(['web'])->group(function() {
+    Route::middleware(['auth'])->group(function() {
+        Route::get( '/house/show/{id?}',    [HousesController::class, 'show'])->name('houseShow');
+        Route::get( '/house/search',        [HousesController::class, 'search'])->name('houseSearch');
+        Route::post('/house/store',         [HousesController::class, 'store'])->name('houseStore');
+        Route::delete('/house/delete/{id}', [HousesController::class, 'delete'])->name('houseDelete');
+        Route::get( '/users/search',        [AuthController::class, 'search'])->name('userSearch');
+        Route::post('/user/store',          [AuthController::class, 'store'])->name('userStore');
+        Route::delete('/user/delete/{id}',  [AuthController::class, 'delete'])->name('userDelete');
+    });
 });
